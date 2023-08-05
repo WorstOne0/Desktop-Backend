@@ -1,7 +1,9 @@
 import { Schema, model } from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 
+// Maybe change lates into saparated schemas
 const UserSchema = new Schema({
+  // User
   email: {
     type: String,
     required: true,
@@ -22,18 +24,25 @@ const UserSchema = new Schema({
     enum: ["Super Admin", "Admin", "Moderator", "User", "Guest"],
     default: "Guest",
   },
+
+  // Profile
   screenName: {
     type: String,
     required: true,
   },
   profilePicture: {
     type: String,
-    required: false,
   },
   thumbnail: {
     type: String,
-    required: false,
   },
+
+  // Steam Profile
+  steamId: {
+    type: String,
+  },
+
+  // Dates
   createdAt: {
     type: Date,
     default: Date.now(),

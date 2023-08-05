@@ -13,6 +13,7 @@ import "./models/user.js";
 import version from "./routes/version.js";
 import authRoute from "./routes/auth_route.js";
 import userRoute from "./routes/user_route.js";
+import steamRoute from "./routes/steam_route.js";
 // Database SUPER ADMIN
 import initSuperAdmin from "./init.js";
 
@@ -34,7 +35,8 @@ app.use((req, res, next) => verifyToken(req, res, next));
 // Routes
 app.use("/", version);
 app.use("/", authRoute);
-app.use("/", userRoute);
+app.use("/user", userRoute);
+app.use("/steam", steamRoute);
 
 // Add the super admin to the database
 initSuperAdmin();
