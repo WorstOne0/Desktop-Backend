@@ -4,18 +4,10 @@ dotenv.config();
 
 // NPM Packages
 import express from "express";
-import mongoose from "mongoose";
-// JWT
-import { verifyToken } from "./jwt.js";
-// Models
-import "./models/user.js";
-// Routes
-import version from "./routes/version.js";
-import authRoute from "./routes/auth_route.js";
-import userRoute from "./routes/user_route.js";
-import steamRoute from "./routes/steam_route.js";
-// Database SUPER ADMIN
-import initSuperAdmin from "./init.js";
+import router from "./routes/index.js";
+import { socketServer } from "./socket/index.js";
+// Database
+import { mongoDBConnect } from "./database/mongo.js";
 
 // Create Server
 const app = express();
@@ -24,24 +16,15 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Database Connect
-mongoose.connect(process.env.MONGO_DB, {
-  useNewUrlParser: true,
-});
-
-// JWT Middleware
-app.use((req, res, next) => verifyToken(req, res, next));
+mongoDBConnect();
 
 // Routes
-app.use("/", version);
-app.use("/", authRoute);
-app.use("/user", userRoute);
-app.use("/steam", steamRoute);
+app.use(router);
 
-// Add the super admin to the database
-initSuperAdmin();
-
-// Start Server
-app.listen(process.env.PORT, () => {
+// Start HTTP Server
+const httpServer = app.listen(process.env.PORT, () => {
   console.log(`Server Started on port ${process.env.PORT}`);
 });
+
+// Start Socket Server
+socketServer(httpServer);

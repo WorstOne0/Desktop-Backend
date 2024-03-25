@@ -1,6 +1,5 @@
 // NPM Packages
 import express from "express";
-
 const router = express.Router();
 
 router.get("/version", function (req, res, next) {
